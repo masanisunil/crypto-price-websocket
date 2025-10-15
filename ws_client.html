@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live BTC/USDT Price Tracker</title>
+  <style>
+    :root {
+      --up: #86EFAC;
+      --down: #FF6B6B;
+      --blue: #4D96FF;
+      --bg: #0d1117;
+      --text: #e6edf3;
+      --card-bg: #161b22;
+    }
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background-color: var(--card-bg);
+      padding: 40px 60px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .card:hover { transform: scale(1.03); }
+    h1 { font-size: 2em; color: var(--blue); margin-bottom: 10px; }
+    #price { font-size: 3.5em; margin: 10px 0; transition: color 0.3s ease; }
+    #change { font-size: 1.5em; margin-top: 10px; font-weight: 500; }
+    #status { margin-top: 20px; font-size: 0.9em; opacity: 0.8; }
+    .fade { animation: fade 0.3s ease; }
+    @keyframes fade { from { opacity: 0.3; } to { opacity: 1; } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Live BTC/USDT Price</h1>
+    <div id="price">Connecting...</div>
+    <div id="change">--</div>
+    <div id="status">Waiting for updates...</div>
+  </div>
+  <script>
+    const ws = new WebSocket("ws://localhost:8000/ws");
+    const priceEl = document.getElementById("price");
+    const changeEl = document.getElementById("change");
+    const statusEl = document.getElementById("status");
+    let lastPrice = 0;
+    ws.onopen = () => {
+      statusEl.textContent = "✅ Connected to WebSocket";
+      statusEl.style.color = "#86EFAC";
+    };
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const price = parseFloat(data.last_price);
+      const pct = parseFloat(data.price_change_percent).toFixed(2);
+      if (price > lastPrice) priceEl.style.color = "var(--up)";
+      else if (price < lastPrice) priceEl.style.color = "var(--down)";
+      lastPrice = price;
+      priceEl.textContent = "$" + price.toLocaleString(undefined, { minimumFractionDigits: 2 });
+      priceEl.classList.add("fade");
+      setTimeout(() => priceEl.classList.remove("fade"), 300);
+      changeEl.textContent = `24h: ${pct}%`;
+      changeEl.style.color = pct >= 0 ? "var(--up)" : "var(--down)";
+      statusEl.textContent = `Last update: ${new Date().toLocaleTimeString()}`;
+    };
+    ws.onclose = () => {
+      statusEl.textContent = "❌ Disconnected from WebSocket";
+      statusEl.style.color = "var(--down)";
+    };
+    ws.onerror = () => {
+      statusEl.textContent = "⚠️ Connection error";
+      statusEl.style.color = "orange";
+    };
+  </script>
+</body>
+</html>
