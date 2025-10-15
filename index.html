@@ -47,7 +47,8 @@
     <div id="status">Waiting for updates...</div>
   </div>
   <script>
-    const ws = new WebSocket("ws://localhost:8000/ws");
+    const ws = new WebSocket("wss://crypto-price-websocket.onrender.com/ws");
+
     const priceEl = document.getElementById("price");
     const changeEl = document.getElementById("change");
     const statusEl = document.getElementById("status");

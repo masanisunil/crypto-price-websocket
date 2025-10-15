@@ -1,5 +1,5 @@
 {
   "routes": [
-    { "src": "/", "dest": "/ws_client.html" }
+    { "src": "/", "dest": "/index.html" }
   ]
 }

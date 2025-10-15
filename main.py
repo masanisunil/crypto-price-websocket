@@ -1,5 +1,3 @@
-# main.py placeholder
-# Use your working FastAPI backend code here (already provided in previous steps)
 import asyncio
 import json
 import logging
@@ -9,6 +7,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel
 from datetime import datetime
 from contextlib import asynccontextmanager
+from fastapi.middleware.cors import CORSMiddleware
 
 # --- Configuration ---
 BINANCE_WS_URL = "wss://stream.binance.com:9443/ws/btcusdt@ticker"
@@ -24,7 +23,6 @@ logging.basicConfig(
 logger = logging.getLogger("CryptoServer")
 
 # --- Data Structures ---
-
 class TickerData(BaseModel):
     symbol: str
     last_price: float
@@ -36,8 +34,7 @@ broadcast_queue: asyncio.Queue[TickerData] = asyncio.Queue(maxsize=QUEUE_SIZE)
 active_connections: List[WebSocket] = []
 
 
-# --- 1. Binance Listener ---
-
+# --- Binance Listener ---
 async def binance_listener():
     logger.info(f"Connecting to Binance WebSocket at: {BINANCE_WS_URL}")
     try:
@@ -76,27 +73,13 @@ async def binance_listener():
     asyncio.create_task(binance_listener())
 
 
-# --- 2. FastAPI App with Lifespan ---
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Modern replacement for on_event('startup')"""
-    asyncio.create_task(binance_listener())
-    asyncio.create_task(broadcaster())
-    yield
-    logger.info("Shutting down server...")
-
-app = FastAPI(title="Crypto Price Server", lifespan=lifespan)
-
-
-# --- 3. Broadcaster ---
-
+# --- Broadcaster ---
 async def broadcaster():
     logger.info("Broadcaster task started.")
     while True:
         try:
             ticker_data = await broadcast_queue.get()
-            message = ticker_data.model_dump_json()  # ✅ Updated for Pydantic v2
+            message = ticker_data.model_dump_json()
             send_tasks = [asyncio.create_task(conn.send_text(message)) for conn in active_connections]
             if send_tasks:
                 await asyncio.gather(*send_tasks, return_exceptions=True)
@@ -106,8 +89,29 @@ async def broadcaster():
             await asyncio.sleep(0.1)
 
 
-# --- 4. WebSocket Endpoint ---
+# --- Lifespan setup ---
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    asyncio.create_task(binance_listener())
+    asyncio.create_task(broadcaster())
+    yield
+    logger.info("Shutting down server...")
 
+
+# --- Create single FastAPI app instance ---
+app = FastAPI(title="Crypto Price Server", lifespan=lifespan)
+
+# ✅ Add CORS middleware to the *same* app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can restrict to your Vercel domain later
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+# --- WebSocket Endpoint ---
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -125,8 +129,7 @@ async def websocket_endpoint(websocket: WebSocket):
         logger.info(f"Client removed. Total: {len(active_connections)}")
 
 
-# --- 5. REST Endpoint ---
-
+# --- REST Endpoint ---
 @app.get("/price", response_model=Dict[str, TickerData])
 def get_latest_price():
     if not latest_price_storage:
@@ -135,7 +138,6 @@ def get_latest_price():
 
 
 # --- Main Runner ---
-
 if __name__ == "__main__":
     import uvicorn
     logger.info(f"Starting server on http://{LOCAL_HOST}:{LOCAL_PORT}")
