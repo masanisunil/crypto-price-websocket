@@ -18,7 +18,7 @@ A Python application that connects to **Binance’s WebSocket API** for live cry
 ✅ Connects to Binance WebSocket for BTC/USDT  
 ✅ Broadcasts live prices to connected WebSocket clients  
 ✅ REST API `/price` returns latest price snapshot  
-✅ Frontend dashboard (`ws_client.html`)  
+✅ Frontend dashboard (`index.html`)  
 ✅ Dockerfile for deployment  
 
 ---
@@ -32,18 +32,18 @@ python main.py
 - REST: http://localhost:8000/price  
 - WebSocket: ws://localhost:8000/ws
 
-Open `ws_client.html` to see live BTC/USDT updates.
+Open `index.html` to see live BTC/USDT updates.
 
 ---
 
 ## 🌍 Deployment
-Deploy backend on Render/Railway/Deta  
-Deploy frontend on Vercel/Netlify
+Deploy backend on Render  
+Deploy frontend on Vercel
 
 ---
 
 ## 👤 Author
 **Sunil Masani**  
 📧 sunil.m0711@gmail.com  
-💼 [LinkedIn](https://linkedin.com/in/sunil-shetty)  
-💻 [GitHub](https://github.com/sunilvshetty)
+💼 [LinkedIn](https://linkedin.com/in/masani-sunil-kumar)  
+💻 [GitHub](https://github.com/masanisunil)
