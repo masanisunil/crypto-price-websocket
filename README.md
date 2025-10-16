@@ -45,5 +45,5 @@ Deploy frontend on Vercel
 ## 👤 Author
 **Sunil Masani**  
 📧 sunil.m0711@gmail.com  
-💼 [LinkedIn](https://linkedin.com/in/masani-sunil-kumar)  
+💼 [LinkedIn](https://www.linkedin.com/in/masani-sunil-kumar-84162426a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)  
 💻 [GitHub](https://github.com/masanisunil)
