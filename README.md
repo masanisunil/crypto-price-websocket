@@ -15,7 +15,7 @@ A Python application that connects to **Binance’s WebSocket API** for live cry
 ---
 
 ## 🚀 Features
-✅ Connects to Binance WebSocket for BTC/USDT  
+✅ Connects to Binance WebSocket for BTC/USDT,ETHUSDT,BNBUSDT
 ✅ Broadcasts live prices to connected WebSocket clients  
 ✅ REST API `/price` returns latest price snapshot  
 ✅ Frontend dashboard (`index.html`)  
@@ -32,7 +32,7 @@ python main.py
 - REST: http://localhost:8000/price  
 - WebSocket: ws://localhost:8000/ws
 
-Open `index.html` to see live BTC/USDT updates.
+Open `index.html` to see live BTC/USDT,ETH/USDT,BNB/USDT updates.
 
 ---
 
