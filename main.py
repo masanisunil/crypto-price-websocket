@@ -307,7 +307,7 @@ def get_latest_price():
 
 
 # --- Run Locally ---
-if _name_ == "_main_":
+if __name__ == "_main_":
     import uvicorn
     logger.info(f"🚀 Starting server on http://{LOCAL_HOST}:{LOCAL_PORT}")
     uvicorn.run(
