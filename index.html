@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -78,6 +78,176 @@
     ws.onerror = () => {
       statusEl.textContent = "⚠️ Connection error";
       statusEl.style.color = "orange";
+    };
+  </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live Crypto Price Tracker</title>
+  <style>
+    :root {
+      --up: #86EFAC;
+      --down: #FF6B6B;
+      --blue: #4D96FF;
+      --bg: #0d1117;
+      --text: #e6edf3;
+      --card-bg: #161b22;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: var(--blue);
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      padding: 25px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      text-align: center;
+      width: 220px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.5);
+    }
+
+    .symbol {
+      font-size: 1.4em;
+      color: var(--blue);
+      margin-bottom: 10px;
+    }
+
+    .price {
+      font-size: 2.5em;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .change {
+      margin-top: 8px;
+      font-size: 1.1em;
+      font-weight: 500;
+    }
+
+    .status {
+      margin-top: 15px;
+      font-size: 0.8em;
+      opacity: 0.8;
+    }
+
+    .fade {
+      animation: fade 0.3s ease;
+    }
+
+    @keyframes fade {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>💹 Live Crypto Prices</h1>
+  <div class="container" id="crypto-container">
+    <!-- Cards will be created dynamically -->
+  </div>
+
+  <script>
+    const ws = new WebSocket("wss://crypto-price-websocket.onrender.com/ws");
+    const container = document.getElementById("crypto-container");
+
+    const pairs = ["BTCUSDT", "ETHUSDT", "BNBUSDT"];
+    const cards = {};
+
+    // Create cards dynamically
+    pairs.forEach(symbol => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <div class="symbol">${symbol}</div>
+        <div class="price" id="price-${symbol}">--</div>
+        <div class="change" id="change-${symbol}">--</div>
+        <div class="status" id="status-${symbol}">Waiting for updates...</div>
+      `;
+      container.appendChild(card);
+      cards[symbol] = {
+        priceEl: document.getElementById(price-${symbol}),
+        changeEl: document.getElementById(change-${symbol}),
+        statusEl: document.getElementById(status-${symbol}),
+        lastPrice: 0
+      };
+    });
+
+    ws.onopen = () => {
+      pairs.forEach(sym => {
+        cards[sym].statusEl.textContent = "✅ Connected to WebSocket";
+        cards[sym].statusEl.style.color = "var(--up)";
+      });
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const symbol = data.symbol;
+      if (!cards[symbol]) return; // skip unknown symbol
+
+      const card = cards[symbol];
+      const price = parseFloat(data.last_price);
+      const pct = parseFloat(data.price_change_percent).toFixed(2);
+
+      // Color update depending on price movement
+      if (price > card.lastPrice) card.priceEl.style.color = "var(--up)";
+      else if (price < card.lastPrice) card.priceEl.style.color = "var(--down)";
+
+      card.lastPrice = price;
+
+      card.priceEl.textContent = "$" + price.toLocaleString(undefined, { minimumFractionDigits: 2 });
+      card.priceEl.classList.add("fade");
+      setTimeout(() => card.priceEl.classList.remove("fade"), 300);
+
+      card.changeEl.textContent = 24h: ${pct}%;
+      card.changeEl.style.color = pct >= 0 ? "var(--up)" : "var(--down)";
+      card.statusEl.textContent = Last update: ${new Date().toLocaleTimeString()};
+    };
+
+    ws.onclose = () => {
+      pairs.forEach(sym => {
+        cards[sym].statusEl.textContent = "❌ Disconnected from WebSocket";
+        cards[sym].statusEl.style.color = "var(--down)";
+      });
+    };
+
+    ws.onerror = () => {
+      pairs.forEach(sym => {
+        cards[sym].statusEl.textContent = "⚠️ Connection error";
+        cards[sym].statusEl.style.color = "orange";
+      });
     };
   </script>
 </body>
