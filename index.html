@@ -175,9 +175,7 @@
 </head>
 <body>
   <h1>💹 Live Crypto Prices</h1>
-  <div class="container" id="crypto-container">
-    <!-- Cards will be created dynamically -->
-  </div>
+  <div class="container" id="crypto-container"></div>
 
   <script>
     const ws = new WebSocket("wss://crypto-price-websocket.onrender.com/ws");
@@ -198,9 +196,9 @@
       `;
       container.appendChild(card);
       cards[symbol] = {
-        priceEl: document.getElementById(price-${symbol}),
-        changeEl: document.getElementById(change-${symbol}),
-        statusEl: document.getElementById(status-${symbol}),
+        priceEl: document.getElementById(`price-${symbol}`),
+        changeEl: document.getElementById(`change-${symbol}`),
+        statusEl: document.getElementById(`status-${symbol}`),
         lastPrice: 0
       };
     });
@@ -221,7 +219,6 @@
       const price = parseFloat(data.last_price);
       const pct = parseFloat(data.price_change_percent).toFixed(2);
 
-      // Color update depending on price movement
       if (price > card.lastPrice) card.priceEl.style.color = "var(--up)";
       else if (price < card.lastPrice) card.priceEl.style.color = "var(--down)";
 
@@ -231,9 +228,9 @@
       card.priceEl.classList.add("fade");
       setTimeout(() => card.priceEl.classList.remove("fade"), 300);
 
-      card.changeEl.textContent = 24h: ${pct}%;
+      card.changeEl.textContent = `24h: ${pct}%`;
       card.changeEl.style.color = pct >= 0 ? "var(--up)" : "var(--down)";
-      card.statusEl.textContent = Last update: ${new Date().toLocaleTimeString()};
+      card.statusEl.textContent = `Last update: ${new Date().toLocaleTimeString()}`;
     };
 
     ws.onclose = () => {
@@ -252,3 +249,4 @@
   </script>
 </body>
 </html>
+
