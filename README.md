@@ -15,11 +15,11 @@ A Python application that connects to **Binance’s WebSocket API** for live cry
 ---
 
 ##  Features
-✅ Connects to Binance WebSocket for BTC/USDT,ETH/USDT,BNB/USDT
-✅ Broadcasts live prices to connected WebSocket clients  
-✅ REST API `/price` returns latest price snapshot  
-✅ Frontend dashboard (`index.html`)  
-✅ Dockerfile for deployment  
+ Connects to Binance WebSocket for BTC/USDT,ETH/USDT,BNB/USDT
+ Broadcasts live prices to connected WebSocket clients  
+ REST API `/price` returns latest price snapshot  
+ Frontend dashboard (`index.html`)  
+ Dockerfile for deployment  
 
 ---
 
