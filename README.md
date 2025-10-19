@@ -1,11 +1,11 @@
 # 🪙 Crypto Price WebSocket Project
 
-## 📌 Overview
+##  Overview
 A Python application that connects to **Binance’s WebSocket API** for live crypto prices and broadcasts them via a **FastAPI WebSocket server** in real time.
 
 ---
 
-## ⚙️ Tech Stack
+##  Tech Stack
 - **FastAPI** (REST + WebSocket)
 - **websockets** (Binance connection)
 - **Pydantic**
@@ -14,7 +14,7 @@ A Python application that connects to **Binance’s WebSocket API** for live cry
 
 ---
 
-## 🚀 Features
+##  Features
 ✅ Connects to Binance WebSocket for BTC/USDT,ETH/USDT,BNB/USDT
 ✅ Broadcasts live prices to connected WebSocket clients  
 ✅ REST API `/price` returns latest price snapshot  
@@ -23,7 +23,7 @@ A Python application that connects to **Binance’s WebSocket API** for live cry
 
 ---
 
-## ▶️ Run Locally
+##  Run Locally
 ```bash
 pip install -r requirements.txt
 python main.py
@@ -36,13 +36,13 @@ Open `index.html` to see live BTC/USDT,ETH/USDT,BNB/USDT updates.
 
 ---
 
-## 🌍 Deployment
+##  Deployment
 Deploy backend on Render  
 Deploy frontend on Vercel
 
 ---
 
-## 👤 Author
+##  Author
 **Sunil Masani**  
 📧 sunil.m0711@gmail.com  
 💼 [LinkedIn](https://www.linkedin.com/in/masani-sunil-kumar-84162426a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)  
