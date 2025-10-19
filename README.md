@@ -1,4 +1,4 @@
-# 🪙 Crypto Price WebSocket Project
+#  Crypto Price WebSocket Project
 
 ##  Overview
 A Python application that connects to **Binance’s WebSocket API** for live crypto prices and broadcasts them via a **FastAPI WebSocket server** in real time.
@@ -44,6 +44,6 @@ Deploy frontend on Vercel
 
 ##  Author
 **Sunil Masani**  
-📧 sunil.m0711@gmail.com  
-💼 [LinkedIn](https://www.linkedin.com/in/masani-sunil-kumar-84162426a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)  
-💻 [GitHub](https://github.com/masanisunil)
+ sunil.m0711@gmail.com  
+ [LinkedIn](https://www.linkedin.com/in/masani-sunil-kumar-84162426a?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app)  
+ [GitHub](https://github.com/masanisunil)
